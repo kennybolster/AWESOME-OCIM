@@ -17,8 +17,11 @@ R = 6371000
 grid['x'] = R * np.cos(grid.latitude/180*np.pi) * np.cos(grid.longitude/180*np.pi)
 grid['y'] = R * np.cos(grid.latitude/180*np.pi) * np.sin(grid.longitude/180*np.pi)
 grid['z'] = R * np.sin(grid.latitude/180*np.pi)
-plt.figure()
-plt.scatter(grid.x[grid.z > 0], grid.y[grid.z > 0], s = .1, c = grid.z[grid.z > 0])
+clustermat = grid[['depth', 'temperature', 'salinity', 'x', 'y', 'z']].values
+# making matrix for clustering algorithm
+kmn = KMeans(n_clusters = 8, random_state = 940).fit(clustermat)
+grid['cluster'] = kmn.predict(clustermat)
+
 
 
 
